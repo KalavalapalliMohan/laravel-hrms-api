@@ -1,3 +1,4 @@
+
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -12,9 +13,28 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                    @php
+                        $user = auth()->user();
+                    @endphp
+
+                    <x-nav-link 
+                        :href="
+                            $user->role->name === 'Admin' 
+                                ? route('admin.dashboard') 
+                                : ($user->role->name === 'HR' 
+                                    ? route('hr.dashboard') 
+                                    : route('dashboard'))
+                        "
+                    >
+                        Dashboard
                     </x-nav-link>
+
+                    @if(in_array($user->role->name, ['Admin', 'HR']))
+                        <x-nav-link :href="route('employees.index')" 
+                            :active="request()->routeIs('employees.*')">
+                            Employees
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -67,9 +87,25 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+            <x-responsive-nav-link 
+                :href="
+                    $user->role->name === 'Admin' 
+                        ? route('admin.dashboard') 
+                        : ($user->role->name === 'HR' 
+                            ? route('hr.dashboard') 
+                            : route('dashboard'))
+                "
+            >
+                Dashboard
             </x-responsive-nav-link>
+
+            @if(in_array($user->role->name, ['Admin', 'HR']))
+                <x-responsive-nav-link :href="route('employees.index')">
+                    Employees
+                </x-responsive-nav-link>
+            @endif
+
+
         </div>
 
         <!-- Responsive Settings Options -->
