@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Employee;
+use App\Http\Requests\StoreEmployeeRequest;
+use App\Http\Requests\UpdateEmployeeRequest;
 
 class EmployeeController extends Controller
 {
@@ -21,25 +23,18 @@ class EmployeeController extends Controller
         return view('employees.index', compact('employees'));
     }
 
-
     public function create()
     {
         return view('employees.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreEmployeeRequest $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:employees',
-        ]);
-
-        Employee::create($request->all());
-        return redirect()->route('employees.index');
+        Employee::create($request->validated());
+        return redirect()->route('employees.index')
+        ->with('success', 'Employee added successfully');
     }
 
-
-    
     // ✅ EDIT
     public function edit($id)
     {
@@ -48,18 +43,12 @@ class EmployeeController extends Controller
     }
 
     // ✅ UPDATE
-    public function update(Request $request, $id)
+    public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
-        $employee = Employee::findOrFail($id);
+        $employee->update($request->validated());
 
-        $request->validate([
-            'name'  => 'required',
-            'email' => 'required|email|unique:employees,email,'.$id,
-        ]);
-
-        $employee->update($request->all());
-
-        return redirect()->route('employees.index');
+        return redirect()->route('employees.index')
+            ->with('success', 'Employee updated successfully');
     }
 
     // ✅ DELETE
