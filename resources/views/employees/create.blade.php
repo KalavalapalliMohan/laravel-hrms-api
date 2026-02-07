@@ -30,7 +30,7 @@
 
                         <h3 class="mb-4">Add Employee</h3>
 
-                        <form action="{{ route('employees.store') }}" method="POST">
+                        <form action="{{ route('employees.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
 
                             <div class="mb-3">
@@ -55,6 +55,15 @@
                                 <label class="form-label">Designation</label>
                                 <input type="text" name="designation" class="form-control" value="{{ old('designation') }}">
                                 @error('designation') <small class="text-danger">{{ $message }}</small> @enderror
+                            </div>
+
+                                <!-- Photo -->
+                            <div class="mb-3">
+                                <label class="form-label">Photo</label>
+                                <input type="file" name="photo" class="form-control">
+                                @error('photo')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
 
                             <button type="submit" class="btn btn-success">Save</button>

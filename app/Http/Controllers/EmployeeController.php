@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
 use App\Models\Employee;
@@ -30,7 +30,15 @@ class EmployeeController extends Controller
 
     public function store(StoreEmployeeRequest $request)
     {
-        Employee::create($request->validated());
+        $data = $request->validated();
+        
+        if ($request->hasFile('photo')) {
+            $path = $request->file('photo')->store('employees', 'public');
+            $data['photo'] = $path;
+        }
+
+        Employee::create($data);
+
         return redirect()->route('employees.index')
         ->with('success', 'Employee added successfully');
     }
@@ -45,7 +53,20 @@ class EmployeeController extends Controller
     // ✅ UPDATE
     public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
-        $employee->update($request->validated());
+
+        $data = $request->validated();
+
+        if ($request->hasFile('photo')) {
+
+            if ($employee->photo && Storage::disk('public')->exists($employee->photo)) {
+                    Storage::disk('public')->delete($employee->photo);
+            }
+
+            $data['photo'] = $request->file('photo')->store('employees', 'public');
+        }
+
+        $employee->update($data);
+        
 
         return redirect()->route('employees.index')
             ->with('success', 'Employee updated successfully');

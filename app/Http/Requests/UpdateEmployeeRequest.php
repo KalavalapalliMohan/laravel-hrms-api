@@ -19,6 +19,7 @@ class UpdateEmployeeRequest extends FormRequest
             'email' => 'required|email|unique:employees,email,' . $this->employee->id,
             'phone' => 'required|digits:10',
             'designation' => 'required',
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ];
     }
 

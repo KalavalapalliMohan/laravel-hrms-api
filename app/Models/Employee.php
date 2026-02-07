@@ -11,5 +11,6 @@ class Employee extends Model
         'email',
         'phone',
         'designation',
+        'photo'
     ];
 }

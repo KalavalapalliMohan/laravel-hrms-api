@@ -30,7 +30,7 @@
 
                         <h3 class="mb-4">Edit Employee</h3>
 
-                        <form action="{{ route('employees.update',$employee->id) }}" method="POST">
+                        <form action="{{ route('employees.update',$employee->id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <div class="mb-3">
@@ -55,6 +55,12 @@
                                 <label class="form-label">Designation</label>
                                 <input type="text" name="designation" class="form-control" value="{{ $employee->designation }}">
                                 @error('designation') <small class="text-danger">{{ $message }}</small> @enderror
+                            </div>
+
+                                    <!-- New Photo -->
+                            <div class="mb-3">
+                                <label>Change Photo</label>
+                                <input type="file" name="photo" class="form-control">
                             </div>
 
                             <button type="submit" class="btn btn-success">Update</button>

@@ -21,6 +21,7 @@ class StoreEmployeeRequest extends FormRequest
             'email' => 'required|email|unique:employees,email',
             'phone' => 'nullable|digits:10',
             'designation' => 'nullable|string|max:100',
+            'photo' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
         ];
     }
 
@@ -38,6 +39,8 @@ class StoreEmployeeRequest extends FormRequest
             'phone.digits' => 'Phone number must be 10 digits',
 
             'designation.required' => 'Designation is required',
+            
+            'photo.required' => 'photo is required',
         ];
     }
 
