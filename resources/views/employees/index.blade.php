@@ -48,16 +48,19 @@
                                     <td>{{ $employee->phone }}</td>
                                     <td>{{ $employee->designation }}</td>
                                     <td>
-                                        <a href="{{ route('employees.edit',$employee->id) }}" class="btn btn-sm btn-warning">Edit</a>
-
-                                        <form action="{{ route('employees.destroy',$employee->id) }}" method="POST" style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-sm btn-danger"
-                                                onclick="return confirm('Are you sure?')">
-                                                Delete
-                                            </button>
-                                        </form>
+                                        @can('update', $employee)
+                                            <a href="{{ route('employees.edit',$employee->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                                        @endcan
+                                        @can('delete', $employee)
+                                            <form action="{{ route('employees.destroy',$employee->id) }}" method="POST" style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-sm btn-danger"
+                                                    onclick="return confirm('Are you sure?')">
+                                                    Delete
+                                                </button>
+                                            </form>
+                                        @endcan
                                     </td>
                                 </tr>
                                 @empty

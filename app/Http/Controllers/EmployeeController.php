@@ -8,8 +8,11 @@ use App\Models\Employee;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
 class EmployeeController extends Controller
 {
+
     // public function index()
     // {
     //     return view('employees.index', [
@@ -44,9 +47,9 @@ class EmployeeController extends Controller
     }
 
     // ✅ EDIT
-    public function edit($id)
+    public function edit(Employee $employee)
     {
-        $employee = Employee::findOrFail($id);
+        $this->authorize('update', $employee);
         return view('employees.edit', compact('employee'));
     }
 
@@ -73,10 +76,12 @@ class EmployeeController extends Controller
     }
 
     // ✅ DELETE
-    public function destroy($id)
+    public function destroy(Employee $employee)
     {
-        Employee::findOrFail($id)->delete();
+        $this->authorize('delete', $employee);
+        $employee->delete();
         return redirect()->route('employees.index');
     }
 
+    use AuthorizesRequests;
 }
