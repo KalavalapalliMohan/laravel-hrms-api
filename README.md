@@ -57,3 +57,37 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+# Laravel HRMS Application
+
+## Features
+- Role-based authentication (Admin, HR, Employee)
+- Employee management (CRUD)
+- Profile photo upload using Laravel Storage
+- Secure access using Middleware & Policies
+- Clean code using Form Request Validation
+
+## Tech Stack
+- Laravel
+- PHP 8+
+- MySQL
+- Blade
+- Bootstrap
+
+## Roles & Permissions
+| Role | Permissions |
+|----|----|
+| Admin | Full access |
+| HR | Manage employees |
+| Employee | View only |
+
+## Setup
+1. Clone repository
+2. Configure `.env`
+3. Run `php artisan migrate`
+4. Run `php artisan storage:link`
+5. Login as Admin / HR
+
+## Screenshots
+(Add screenshots here)
