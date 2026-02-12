@@ -5,30 +5,21 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Employee;
+use App\Http\Requests\Api\StoreEmployeeRequest;
+use App\Http\Resources\EmployeeResource;
 
 class EmployeeController extends Controller
 {
     public function index()
     {
-        return response()->json([
-            'status' => true,
-            'data' => Employee::paginate(10)
-        ]);
+        return EmployeeResource::collection(Employee::paginate(10));
     }
 
-    public function store(Request $request)
+    public function store(StoreEmployeeRequest $request)
     {
-        $data = $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:employees',
-        ]);
-
-        $employee = Employee::create($data);
-
-        return response()->json([
-            'message' => 'Employee created',
-            'data' => $employee
-        ], 201);
+        return new EmployeeResource(
+            Employee::create($request->validated())
+        );
     }
 
     public function update(Request $request, Employee $employee)
